@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>       
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+        <script src="jquery.min.js" type="text/javascript"></script>
+        <script src="getData.js" type="text/javascript"></script>
+		<script src="knockout-2.2.0.js" type="text/javascript"></script>
+        <script src="dosomething.js" type="text/javascript"></script>
+	<title>
+        show me the weather
+        </title>         
+    </head>
+     <style>
+        a:link{color:#eee;text-decoration:none;}
+        a:hover{color:#00f;text-decoration:none;}
+        a:visited{color:#e33;text-decoration:none;}
+    </style>
+<body>
+<div id="main">
+	<br />
+    <select id="provinces"></select>
+    <select id="cities"></select>
+    <select id="countries"></select>
+	
+	<br /><br />
+	<span data-bind="text:city"></span><span class="smallfont" data-bind="text:city_en"></span>
+	<!-- <span data-bind="text:cityid"></span> -->
+	<span data-bind="text:date_y"></span>
+	白天：<span data-bind="text:fx1"></span>，<span data-bind="text:index"></span>
+	夜间：<span data-bind="text:fx2"></span>，<span data-bind="text:index48"></span>
+	<br />
+	
+	
+	<span data-bind="text:index48_d"></span>
+	<span data-bind="text:index48_uv"></span>
+	息斯敏过敏气象指数：<span data-bind="text:index_ag"></span>
+	陈炼指数：<span data-bind="text:index_cl"></span>
+	舒适度指数：<span data-bind="text:index_co"></span>
+	<span data-bind="text:index_d"></span>
+	<span data-bind="text:index_ls"></span>
+	美发指数：<span data-bind="text:index_tr"></span>
+	紫外线指数：<span data-bind="text:index_uv"></span>
+	洗车指数：<span data-bind="text:index_xc"></span>
+	<span data-bind="text:fchh"></span><br /><br />
+	
+	
+	<div class="wwindow">
+		摄氏温度：<span data-bind="text:temp1"></span><br />
+		华氏温度：<span data-bind="text:tempF1"></span><br />
+		天气描述：<span data-bind="text:weather1"></span>
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img1+'.gif' ,title:img_title1 }" />
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img2+'.gif' ,title:img_title2 }" /><br />
+		风速：<span data-bind="text:wind1"></span><br />
+		<span data-bind="text:fl1"></span><br />
+		st1<span data-bind="text:st1"></span><br />
+	</div>
+	<div class="wwindow">
+		摄氏温度：<span data-bind="text:temp2"></span><br />
+		华氏温度：<span data-bind="text:tempF2"></span><br />
+		天气描述：<span data-bind="text:weather2"></span>
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img3+'.gif' ,title:img_title3 }" />
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img4+'.gif' ,title:img_title4 }" /><br />
+		风速：<span data-bind="text:wind2"></span><br />
+		风力：<span data-bind="text:fl2"></span><br />
+		st2<span data-bind="text:st2"></span><br />
+	</div>
+	<div class="wwindow">
+		摄氏温度：<span data-bind="text:temp3"></span><br />
+		华氏温度：<span data-bind="text:tempF3"></span><br />
+		天气描述：<span data-bind="text:weather3"></span>
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img5+'.gif' ,title:img_title5 }" />
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img6+'.gif' ,title:img_title6 }" /><br />
+		风速：<span data-bind="text:wind3"></span><br />
+		风力：<span data-bind="text:fl3"></span><br />
+		st3<span data-bind="text:st3"></span><br />
+	</div>
+	<div class="clearfloat"></div>
+	<div class="wwindow">
+		摄氏温度：<span data-bind="text:temp4"></span><br />
+		华氏温度：<span data-bind="text:tempF4"></span><br />
+		天气描述：<span data-bind="text:weather4"></span>
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img7+'.gif' ,title:img_title7 }" />
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img8+'.gif' ,title:img_title8 }" /><br />
+		风速：<span data-bind="text:wind4"></span><br />
+		风力：<span data-bind="text:fl4"></span><br />
+		st4<span data-bind="text:st4"></span><br />
+	</div>
+	<div class="wwindow">
+		摄氏温度：<span data-bind="text:temp5"></span><br />
+		华氏温度：<span data-bind="text:tempF5"></span><br />
+		天气描述：<span data-bind="text:weather5"></span>
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img9+'.gif' ,title:img_title9 }" />
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img10+'.gif' ,title:img_title10 }" /><br />
+		风速：<span data-bind="text:wind5"></span><br />
+		风力：<span data-bind="text:fl5"></span><br />
+		st5<span data-bind="text:st5"></span><br />
+	</div>
+	<div class="wwindow">
+		摄氏温度：<span data-bind="text:temp5"></span><br />
+		华氏温度：<span data-bind="text:tempF5"></span><br />
+		天气描述：<span data-bind="text:weather5"></span>
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img11+'.gif' ,title:img_title11 }" />
+		<img data-bind= " attr :{src:'http://m.weather.com.cn/img/c'+img12+'.gif' ,title:img_title12 }" /><br />
+		风速：<span data-bind="text:wind5"></span><br />
+		风力：<span data-bind="text:fl5"></span><br />
+		st5<span data-bind="text:st5"></span><br />
+	</div>
+</div>
+</body>
+</html>

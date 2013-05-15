@@ -1,0 +1,10 @@
+a:{display:block;padding:3px;border:#999 1px dotted;float:left;}
+a:link{color:#eee;text-decoration:none;}
+a:hover{color:#00f;text-decoration:none;}
+a:visited{color:#e33;text-decoration:none;}
+
+#main{font-size:15px;color:#333;line-height:30px;margin:30px 100px auto 100px;}
+.wwindow{float:left;border:#eee 1px double;width:30%;min-height:100px;padding:10px;font-size:13px;color:#333;line-height:20px;}
+.clearfloat{float:none;clear:both;}
+
+.smallfont{font-size:11px;color:#999;line-height:20px;}

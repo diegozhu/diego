@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="configure.js" type="text/javascript"></script>
+<script src="cube.js" type="text/javascript"></script>
+<script src="game.js" type="text/javascript"></script>
+<title>leisure game</title>
+</head>
+<body>
+
+<div style="border:#000 1px double; width:600px;height:auto;margin:0px auto auto auto;" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;" >
+<div id="gameZone" style="width:600px;height:400px;position:relative;border:#00f 1px double;"></div>
+<input id="btBegin" type="button" onclick="game1.begin();" value="开始"/>
+<input id="btBegin" type="button" onclick="game1.pause();" value="停止"/>
+<input id="btScore" type="button" value="排行榜"/>
+</div>
+<div style="position:absolute;top:0;left:0;width:220px;height:auto;">
+	<div id="msg" style="border:#000 1px double;height:auto;font-size:13px;padding-left:25px;"></div>
+	<div id="msg2" style="border:#000 1px double;height:auto;font-size:15px;padding:20px;color:#999;">
+		游戏规则:<br />
+			鼠标移动到<font style="size:17px;font-weight:bold;color:black;">黑色</font>方块成功吃掉一次.<br />
+			鼠标碰到<font style="size:17px;font-weight:bold;color:blue;">蓝色</font>方块则失败.<br />
+	</div>
+	<div id="msg3" style="border:#000 1px double;height:auto;font-size:15px;padding:20px;color:#999;"></div>
+</div>
+<script language="javascript">
+var cfg = new Configuration();
+var game1 = new Game("game1",cfg,document.getElementById("gameZone"));
+
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="caculator.css" />
+<script src="../../js/jquery.js" type="text/javascript"></script>
+<title>计算器</title>
+</head>
+<body>
+<div id="caculator"  unselectable="on" onselectstart="return false;" style="-moz-user-select:none;" >
+	<div id="proccess"></div>
+	<div id="result"></div>
+	<div id="message"></div>
+	<div class="line">
+		<div id="backspace" name="backspace" class="action">←</div>
+		<div id="clear" name="cls" class="action">EC</div>
+		<div id="plus" name="caculate" class="action">+</div>
+		<div id="minus" name="caculate" class="action">-</div>
+	</div>
+	<div class="line">
+		<div id="1" name="number" class="action">1</div>
+		<div id="2" name="number" class="action">2</div>
+		<div id="3" name="number" class="action">3</div>
+		<div id="multi" name="caculate" class="action">×</div>
+	</div>
+	<div class="line">
+		<div id="4" name="number" class="action">4</div>
+		<div id="5" name="number" class="action">5</div>
+		<div id="6" name="number" class="action">6</div>
+		<div id="divide" name="caculate" class="action">/</div>
+	</div>
+	<div class="line">
+		<div style="float:left;clear;left;width:156px;height:100px;">
+			<div style="float:left;">
+				<div id="7" name="number" class="action">7</div>
+				<div id="8" name="number" class="action">8</div>
+				<div id="9" name="number" class="action">9</div>
+			</div>
+			<div style="float:left;">
+				<div id="neg" name="neg" class="action">+<br />-</div>
+				<div id="0" name="number" class="action">0</div>
+				<div id="dot" name="dot" class="action">.</div>
+			</div>
+		</div>
+		<div id="equal" name="result" class="action">=</div>
+	</div>	
+</div>
+<script src="caculator.js" type="text/javascript"></script>
+</body>
+</html>

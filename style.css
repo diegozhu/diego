@@ -1,0 +1,41 @@
+#main{margin:100px auto auto 200px;}
+
+a:link{color:#333;text-decoration:none;}
+a:hover{color:#22f;text-decoration:none;}
+
+.go2hell:link{color:#e33;text-decoration:none;}
+.go2hell:hover{color:#00f;text-decoration:none;}
+.go2hell:visited{color:#e33;text-decoration:none;}
+*{margin:0;padding:0;}
+ul{list-style:none;display:block;left:-10px;}
+hr{margin-top:15px;}
+.contact{display:inline-block;min-width:25px;margin-left:8px;height:25px;text-align:center;}
+
+/* for 2000px or less */
+@media screen and (max-width:2000px){
+    #main{margin:60px auto auto 120px;}
+    a:link{color:#333;text-decoration:underline;}
+    body{color:#777;font-space:1px;word-spacing:1px;line-height:35px;font-size:20px;}
+    strong{font-size:30px;line-height:45px;}
+}
+
+/* for 1400px or less */
+@media screen and (max-width:1400px){
+    #main{margin:60px auto auto 120px;}
+    a:link{color:#333;text-decoration:underline;}
+    strong{font-size:20px;line-height:40px;}
+    body{color:#777;font-space:1px;word-spacing:1px;line-height:25px;font-size:13px;}
+}
+
+/* for 700px or less */
+@media screen and (max-width:800px){
+    #main{margin:36px auto auto 72px;} 
+    a:link{color:#333;text-decoration:underline;}
+}
+
+
+/* for 48px or less */
+@media screen and (max-width:500px){
+    #main{margin:5px;}
+    a:link{color:#333;text-decoration:underline;}
+}

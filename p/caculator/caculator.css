@@ -1,0 +1,12 @@
+#caculator{width:600px;height:600px;margin:50px auto auto auto;text-align:center;position:relative;}
+#proccess{width:206px;height:13px;margin-left:200px;margin-top:3px;text-align:left;font-size:8px;position:absolute;}
+#result{width:206px;height:40px;border:#000 1px double;margin-left:auto;margin-right:auto;line-height:35px;text-align:right;font-size:15px;padding-top:5px;}
+#message{width:206px;height:20px;margin-left:auto;margin-right:auto;text-align:right;font-size:13px;position:relative;border:#000 1px double;}
+
+.action{width:50px;height:35px;border:#000 1px double;padding-top:15px;}
+
+#neg{width:50px;height:30px;padding-top:20px;line-height:7px;}
+#equal{float:left;width:50px;height:67px;border:#000 1px double;padding-top:35px;}
+
+.line{float:none;clear:both;margin-left:auto;margin-right:auto;width:208px;}
+.line div{float:left;}

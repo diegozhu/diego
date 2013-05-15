@@ -1,0 +1,351 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="../js/libs/jquery.js" type="text/javascript"></script>
+<title>leisure game</title>
+</head>
+<div style="border:#000 1px double; width:600px;height:auto;margin:0px auto auto auto;" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;" >
+<div id="gameZone" style="width:600px;height:400px;position:relative;border:#00f 1px double;">
+</div>
+<input id="btBegin" type="button" value="开始"/>
+<input id="btScore" type="button" value="排行榜"/>
+</div>
+<div style="position:absolute;top:0;left:0;width:220px;height:auto;">
+	<div id="msg" style="border:#000 1px double;height:auto;font-size:13px;padding-left:25px;"></div>
+	<div id="msg2" style="border:#000 1px double;height:auto;font-size:15px;padding:20px;color:#999;">
+		游戏规则:<br />
+			鼠标移动到<font style="size:17px;font-weight:bold;color:black;">黑色</font>方块成功吃掉一次.<br />
+			鼠标碰到<font style="size:17px;font-weight:bold;color:blue;">蓝色</font>方块则失败.<br />
+	</div>
+	<div id="msg3" style="border:#000 1px double;height:auto;font-size:15px;padding:20px;color:#999;"></div>
+</div>
+<body>
+<script language="javascript">
+var timeoutCubeAddHandler;
+var timeoutCubeMoveHandler;
+var addtimeStep = 4000; //millisceond
+var fps = 50; //millisceond
+var cubeAddSpeedUp = 1.01;
+var changeSequence = 1000;
+
+var beginTime;
+var endTime;
+var Score = 0;   // record player's score
+var playerName = "";
+var totalCubeNumber = 0;
+var hostIp = "http://192.168.252.26/test/cube/record.php";
+
+var imgWidth = 30;
+var imgHeight = 30;
+var borderWidth = 600;
+var borderHeight = 400;
+
+var directions = new Array();  		// record every cube moving direction
+var speedVarHori = new Array();    	// speed 系数
+var speedVarVerti = new Array();    // speed 系数
+var changeCountLeft = new Array();
+
+var pauseGame = false;
+var gameOver = false;
+
+var directionUp = 1;
+var directionDown = 2;
+var directionLeft = 3;
+var directionRight = 6;
+var directionUpLeft = directionUp + directionLeft;   	//4
+var directionDownLeft = directionDown + directionLeft;  //5
+var directionUpRight = directionUp + directionRight; 	//7
+var directionDownRight = directionDown + directionRight;//8
+
+var displayInfo = true;
+var displayDetailedInfo = false;
+
+//  0:up   1:down    2:left    3:right    4:left-top    5:left-down    6:right-top    7:right-down
+$(function(){
+	$("#btScore").click(function(){
+		window.location = "scores.php";
+	});
+	$("#btBegin").click(function(){
+		if(gameOver){
+			gameOver = false;
+			$("#btBegin").val("暂停");
+			$("#gameZone").html("");
+			beginTime = new Date();
+			directions = new Array();  		// record every cube moving direction
+			speedVarHori = new Array();    	// speed 系数
+			speedVarVerti = new Array();    // speed 系数
+			changeCountLeft = new Array();
+			addtimeStep = 2000; //millisceond
+			fps = 50; //millisceond
+			cubeAddSpeedUp = 1.1;
+			changeSequence = 1000;
+			Score = 0;   // record player's score
+			totalCubeNumber = 0;
+			info();
+			begin();
+		}else{
+			if(pauseGame){
+				$("#btBegin").val("暂停");
+				timeoutCubeAddHandler = setTimeout("addCube()",addtimeStep);
+				timeoutCubeMoveHandler = setTimeout("move()",1.0/fps);
+				pauseGame = false;
+			}else{
+				if(playerName == "" || playerName == undefined){
+					var msg = "玩家姓名？";
+					while(playerName == "" || playerName == undefined){
+						playerName = prompt(msg);
+						msg = "您必须输入姓名！";
+					}
+					begin();
+				}else{
+					pauseGame = true;
+					clearTimeout(timeoutCubeAddHandler);
+					clearTimeout(timeoutCubeMoveHandler);
+				}
+			}
+		}		
+	});
+	info();
+	alert("注意！ IE 8 卡死。请使用chrome或者firefox 浏览器。");
+});
+
+function begin(){
+	addCube("blackCube");
+	$("#btBegin").val("暂停");
+	beginTime = new Date();
+	setTimeout("addCube(null,true)",addtimeStep);
+	move();
+}
+function addCube(type,loop){
+	if(!gameOver && !pauseGame){
+		var imgName = "blueCube";
+		var mouseoverhandler = "over();";
+		if((typeof type )!= "undefined" && type == "blackCube"){
+			imgName = "blackCube"
+			mouseoverhandler = "eat();";
+		}
+		var newCube = "<div class=\""+imgName+"\" id=\"imgDiv"+totalCubeNumber+"\" onmouseover=\""+ mouseoverhandler+"\" style=\"color:white;width:30px;height:30px;border:#000 1px double;position:absolute;display:inline;left:"+Math.random()*(borderWidth-imgWidth)+"px;top:"+Math.random()*(borderHeight-imgHeight)+"px;background:url("+imgName+".png);\"></div>";
+		$("#gameZone").append(newCube);
+		totalCubeNumber ++;
+		directions.push(parseInt(Math.random()*10));
+		changeCountLeft.push(parseInt(Math.random()*changeSequence));
+		speedVarHori.push(Math.random()+1);
+		speedVarVerti.push(Math.random()+1);
+	}
+	if((typeof loop )!= "undefined" && loop != false){
+		timeoutCubeAddHandler = setTimeout("addCube(null,true)",addtimeStep);
+	}
+}
+function over(){
+	if(!gameOver && !pauseGame){
+		gameOver = true;
+		$("#btBegin").val("重新开始");
+		clearTimeout(timeoutCubeAddHandler);
+		clearTimeout(timeoutCubeMoveHandler);
+		endTime = new Date();
+		var endurance = endTime - beginTime;
+		var msg = "<font style=\"font-size:13px;color:#999;\"><font class=\"score\">"+playerName+"</font>&nbsp;的成绩:<br />坚持了<font class=\"score\">"+endurance+"</font>毫秒"+"<br />吃掉:<font class=\"score\">"+Score+"</font><br />方块数:<font class=\"score\">"+totalCubeNumber+"</font></font>";
+		var val = endurance /3000 + Score * 100 + totalCubeNumber*10;
+		val = val + "";
+		val = val.substring(0,val.indexOf(".")+3);
+		var lastMsg = "";
+		var url = hostIp +"?"+"time="+endurance+"&score="+Score+"&name="+playerName+"&totalCubeNumber="+totalCubeNumber+"&totalscore="+val;
+		if(val<1000){
+			lastMsg = "努力空间非常大!";
+		}else if (val<2000){
+			lastMsg = "一般般~";
+		}else if (val<4000){
+			lastMsg = "不错不错~";
+		}else if (val<6000){
+			lastMsg = "厉害厉害~";
+		}else if (val<10000){
+			lastMsg = "niubility!";
+		}else if(val>10000){
+			lastMsg = "你可以成仙了!";
+		}
+		$("#msg3").html(msg+"<font style=\"font-size:13px;color:#999;\"><br />总得分:<font class=\"score\">"+val+"</font><br />水平评估:<font class=\"score\">"+lastMsg+"</font></font>");
+		$.get(url,function(data){
+			//alert("成绩已经提交！"+data);
+		});
+	}
+}
+function eat(){
+	if(!gameOver && !pauseGame){
+		Score ++;
+		addCube();
+		$("#imgDiv0").css("top",Math.random()*(borderHeight-imgHeight)).css("left",Math.random()*(borderWidth-imgWidth)).html(Score);
+		directions[0] = (parseInt(Math.random()*10));
+		speedVarHori[0] = Math.random()+1;
+		speedVarVerti[0] = Math.random()+1;
+	}
+}
+function move(){
+	if(!gameOver && !pauseGame){
+		for(var i = 0;i<totalCubeNumber;i++){
+			var cube = $("#imgDiv"+i);
+			var left = parseInt($(cube).css("left"));
+			var top = parseInt($(cube).css("top"))
+			if(--changeCountLeft[i] <= 0){
+				changeCountLeft[i] =parseInt(Math.random()*changeSequence);
+				directions[i] = parseInt(Math.random()*10);
+				speedVarVerti[i] = Math.random()+1;
+				speedVarHori[i] = Math.random()+1;
+			}
+			switch (directions[i]) {
+				case directionUp:  //1
+					if(top < 0) {
+						directions[i] ++;
+						top = 0;
+					}else{
+						top = top - speedVarVerti[i];
+					}
+					break;
+				case directionDown: //2
+					if(top > (borderHeight-imgHeight)) {
+						directions[i] --;
+						top = borderHeight-imgHeight;
+					}else{
+						top = top + speedVarVerti[i];
+					}
+					break;
+				case directionLeft:  //3
+					if(left < 0) {
+						directions[i] += 3;
+						left = 0;
+					}else{
+						left = left - speedVarHori[i];
+					}
+					break;				  
+				case directionRight:   //6
+					if(left > (borderWidth-imgWidth)) {
+						directions[i] -= 3;
+						left = borderWidth-imgWidth;
+					}else{
+						left = left + speedVarHori[i];
+					}
+					break;
+				case directionUpLeft: //directionUp + directionLeft;  4
+					if(left < 0 ) {   
+						directions[i] += 3;
+						left = 0;
+					}else{
+						left = left - speedVarHori[i];
+					}
+					if(top < 0) {
+						directions[i] ++;
+						top = 0;
+					}else{
+						top = top - speedVarVerti[i];
+					}
+					break;
+				case directionDownLeft:
+					if(left < 0 ) {
+						directions[i] += 3;
+						left = 0;
+					}else{
+						left = left - speedVarHori[i];
+					}
+					if(top > (borderHeight-imgHeight)) {
+						directions[i] ++;
+						top = borderHeight-imgHeight;
+					}else{
+						top = top + speedVarVerti[i];
+					}
+					break;
+				case directionUpRight:  //  directionUp + directionRight; 	//7
+					if(left > (borderWidth-imgWidth) ) {
+						directions[i] -= 3;
+						left = borderWidth-imgWidth;
+					}else{
+						left = left + speedVarHori[i];
+					}
+					if(top < 0) {
+						directions[i] ++;
+						top = 0;
+					}else{
+						top = top  - speedVarVerti[i];
+					}
+					break;
+				case directionDownRight:   //directionDown + directionRight;//8
+					if(left > (borderWidth-imgWidth) ) {
+						directions[i] -= 3;
+						left = borderWidth-imgWidth;
+					}else{
+						left = left + speedVarHori[i];
+					}
+					if(top > (borderHeight-imgHeight)) {
+						directions[i] --;
+						top = (borderHeight-imgHeight);
+					}else{
+						top = top  + speedVarVerti[i];
+					}
+					break;
+				default:
+					directions[i] = parseInt(Math.random()*10);
+					break;
+			}
+			$(cube).css("left",left).css("top",top);
+		}
+		timeoutCubeMoveHandler = setTimeout("move()",1.0/fps);
+		info();
+	}
+}
+function info(){
+	if(displayInfo){
+		//var msg = "addtimeStep:" +addtimeStep +"<br />fps:"+fps+"<br />cubeAddSpeedUp:"+cubeAddSpeedUp+"<br />totalCubeNumber:"+totalCubeNumber+"<br />directions.length:"+directions.length+"<br />changeCountLeft.length:"+changeCountLeft.length+"<br />speedVarHori.length:"+speedVarHori.length+"<br />speedVarVerti.length:"+speedVarVerti.length+"<br />changeSequence:"+changeSequence+"<br />Score:<font color=\"red\">"+Score+"</font><br />pauseGame:"+pauseGame+"<br />border:("+borderWidth+"-"+imgWidth+")x("+borderHeight+"-"+imgHeight+")px";
+		var msg = "<h1 style=\"color:red\">得分:"+Score+"<br />方块总数:"+totalCubeNumber+"</h1>";
+		$("#msg").html(msg); 
+	}
+	if(displayDetailedInfo){
+		var msg2 ="";
+		for(var i = 0;i<totalCubeNumber;i++){
+			msg2 += i+":";
+			msg2 += "dire:"+directions[i]+" "+getDirection(directions[i]);
+			msg2 += "&nbsp;&nbsp;&nbsp;changeCountLeft:"+changeCountLeft[i];
+			msg2 += "<br />left:"+$("#imgDiv"+i).css("left");
+			msg2 += "<br />top:"+$("#imgDiv"+i).css("top");
+			msg2 += "<br />speedVarHori:"+speedVarHori[i];
+			msg2 += "<br />speedVarVerti:"+speedVarVerti[i]+"<br /><br />";
+		};
+		$("#msg2").html(msg2);
+	}
+}
+
+function getDirection(intI){
+	switch (intI) {
+		case directionUp:
+			return "up";
+			break;
+		case directionDown:
+			return "down";
+			break;
+		case directionLeft:
+			return "left";
+			break;
+		case directionRight: 
+			return "right";
+			break;
+		case directionUpLeft:
+			return "left-top";
+			break;
+		case directionDownLeft: 
+			return "left-down";
+			break;
+		case directionUpRight:
+			return "right-top";
+			break;
+		case directionDownRight:   
+			return "right-down";
+			break;
+		default:
+			return "default";
+			break;
+		}
+}
+</script>
+<style>
+.score{font-size:16px;color:red;}
+body{height:2000px;}
+</style>
+</body>
+</html>

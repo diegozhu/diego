@@ -1,0 +1,26 @@
+body{width:920px;height:auto;margin-left:auto;margin-right:auto;}
+
+#header,#content,#footer{margin-left:auto;margin-right:auto;}
+
+#header{height:260px;text-align:center;font-size:40px;}
+#content{height:auto;}
+#footer{height:60px;}
+
+/** header **/
+#header #title{margin-top:60px;display:block;}
+
+
+/** content **/
+#content div{float:left;overflow:auto;}
+
+#survey{width:40%;height:600px;}
+#middle{width:33%;} 
+	#message{height:300px;}
+	#list{height:300px;}
+#right{width:26%;}
+	#user{height:300px;}
+	#committee{height:300px;}
+
+
+/** util **/
+.clearfix{float:none;clear:both;}
